@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+var message = 'hello world from hash 😶'
+if (location.hash === '#getdata') {
+    var ifrproxy = document.createElement('iframe');
+    ifrproxy.style.display = 'none';
+    ifrproxy.src = 'http://localhost:7000/location_hash/b.html#' + message; // 注意该文件在3000端口下
+    document.body.appendChild(ifrproxy);
+}
+</script>
+</body>
+</html>

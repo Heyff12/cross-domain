@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>window.name跨域</title>
+</head>
+<body>
+<p>hello world</p>
+<script>
+var p = document.getElementsByTagName('p')[0];
+var isFirst = true;
+var iframe = document.createElement('iframe');
+
+iframe.src = 'http://localhost:7001/windowname.html'; //第一次加载url
+iframe.style.display = 'none';
+document.body.appendChild(iframe);
+
+var loadFunc = function () {
+    if(isFirst){
+        //加载完url后，修改src属性，使其与3000端口同源
+        iframe.src = 'http://localhost:7000/windowname/b.html';
+        setInterval(function(){
+            isFirst = false;
+        },3000);        
+    }else {
+        //iframe回到原域后，获取name的值，执行回调函数，然后销毁iframe
+        p.innerHTML = iframe.contentWindow.name;
+        iframe.contentWindow.close();
+        document.body.removeChild(iframe);
+        iframe.src = '';
+        iframe = null;
+    }
+}
+
+//监听iframe是否加载，加载完执行loadFunc
+iframe.onload = loadFunc;
+
+</script>
+</body>
+</html>
