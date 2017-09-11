@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "express": "^4.15.4",
     "http-proxy-middleware": "^0.17.4",
     "koa": "^2.3.0",
     "socket.io": "^2.0.3"
