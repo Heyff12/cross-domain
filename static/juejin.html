@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CROS-juejin</title>
+    <style type="text/css">
+    ul {}
+
+    a {
+        text-decoration: none;
+        color: green;
+        padding-right: 6px;
+    }
+
+    i {
+        color: grey;
+        font-size: 12px;
+    }
+    </style>
+</head>
+
+<body>
+    <h2>获取掘金的收藏文章列表</h2>
+    <div>page: <input type="text" name="" value="0" /></div>
+    <div>pageSize: <input type="text" name="" value="20" /></div>
+    <button>通过node代理跨域</button>
+    <ul>
+    </ul>
+    <p></p>
+    <br/>
+    <br/>
+    <br/>
+    <script>
+    var btn = document.getElementsByTagName('button')[0];
+    var text = document.getElementsByTagName('p')[0];
+    var page = document.getElementsByTagName('input')[0].value;
+    var pageSize = document.getElementsByTagName('input')[1].value;
+    var ul = document.getElementsByTagName('ul')[0];
+    btn.addEventListener('click', function() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.withCredentials = false;
+
+        //---掘金获取个人收藏
+        xmlhttp.open("GET", '/v1/user/582595a90ce4630058bd0c31/like/entry?page='+page+'&pageSize='+pageSize);
+
+        //xmlhttp.setRequestHeader("Origin", "https://juejin.im");
+        xmlhttp.setRequestHeader("X-Juejin-Client", "1503456405362");
+        xmlhttp.setRequestHeader("X-Juejin-Src", "web");
+        xmlhttp.setRequestHeader("X-Juejin-Token", "eyJhY2Nlc3NfdG9rZW4iOiJhVUY5cUtqMVc1SmZQVVVxIiwicmVmcmVzaF90b2tlbiI6ImZhWTZkOEhPTkVQVGw4REMiLCJ0b2tlbl90eXBlIjoibWFjIiwiZXhwaXJlX2luIjoyNTkyMDAwfQ==");
+        xmlhttp.setRequestHeader("X-Juejin-Uid", "582595a90ce4630058bd0c31");
+
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = xmlhttp.responseText;
+                var obj = eval("(" + data + ")");
+                var list = obj.d.entryList;
+                var title = [];
+                var worklist = [];
+                var liD = '';
+                var len=0;
+                for (var item of list) {
+                    let now = {
+                        title: item.title,
+                        url: item.originalUrl,
+                        date: item.updatedAt,
+                        content: item.content,
+                    };
+                    len++;
+                    liD += '<li><dl><dt><a href="'+ item.originalUrl + '" target="_blank">' + len +'、'  + item.title + '</a><i>' + item.updatedAt + '</i></dt><dd>' + item.content + '</dd></dl></li>';
+                    title.push(item.title);
+                    worklist.push(now)
+                }
+                console.log(title);
+                console.log(worklist);
+                ul.innerHTML = liD;
+            }
+        }
+    });
+
+
+    function juejin(p, s) {
+        var xmlhttp;
+        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        //xmlhttp.withCredentials = true;
+
+        //---掘金获取个人收藏
+        xmlhttp.open("GET", 'https://user-like-wrapper-ms.juejin.im/v1/user/582595a90ce4630058bd0c31/like/entry?page=' + p + '&pageSize=' + s);
+
+        xmlhttp.setRequestHeader("X-Juejin-Client", "1503456405362");
+        xmlhttp.setRequestHeader("X-Juejin-Src", "web");
+        xmlhttp.setRequestHeader("X-Juejin-Token", "eyJhY2Nlc3NfdG9rZW4iOiJhVUY5cUtqMVc1SmZQVVVxIiwicmVmcmVzaF90b2tlbiI6ImZhWTZkOEhPTkVQVGw4REMiLCJ0b2tlbl90eXBlIjoibWFjIiwiZXhwaXJlX2luIjoyNTkyMDAwfQ==");
+        xmlhttp.setRequestHeader("X-Juejin-Uid", "582595a90ce4630058bd0c31");
+
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = xmlhttp.responseText;
+                var obj = eval("(" + data + ")");
+                var list = obj.d.entryList;
+                var title = [];
+                var url = [];
+                for (var item of list) {
+                    let now = {
+                        title: item.title,
+                        url: item.originalUrl,
+                    };
+                    title.push(item.title);
+                    url.push(now)
+                }
+                console.log(title);
+                console.log(url);
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>

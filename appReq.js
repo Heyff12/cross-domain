@@ -30,6 +30,13 @@ app.get('/proxy2', function(request, response){
 //第7种跨域proxy2-------end--------------------------------------------------------------------------------------------------
 
 
+//node代理跨域-------start----------------------------------------------------------------------------------
+app.use('/v1/user/582595a90ce4630058bd0c31/like/entry', proxy({
+    target: "https://user-like-wrapper-ms.juejin.im/",
+    changeOrigin: true
+}));
+//node代理跨域-------start----------------------------------------------------------------------------------
+
 app.listen(requestPort, function () {
     console.log('Requester is listening on port '+ requestPort); // 在dos窗口会执行这个回调函数
 });
