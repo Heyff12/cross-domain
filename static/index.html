@@ -7,6 +7,7 @@
         ul{
             list-style: none;
             margin:20px;
+            margin-bottom: 70px;
         }
         a{
             text-decoration: none;
@@ -37,11 +38,14 @@
 </ul>
 
 
-<h3>借鉴：https://github.com/FatDong1/cross-domain</h3>
+
+
 <pre>
-1、虽然浏览器默认禁止了跨域访问，但并不禁止在页面中引用其他域的JS文件，并可以自由执行引入的JS文件中的function（包括操作cookie、Dom等等）。根据这一点，可以方便地通过创建script节点的方法来实现完全跨域的通信。具体的做法可以参考YUI的Get Utility
-2、原理：所有具有src属性的HTML标签都是可以跨域的，包括<img/>, <script/>
+1、虽然浏览器默认禁止了跨域访问，但并不禁止在页面中引用其他域的JS文件，并可以自由执行引入的JS文件中的function（包括操作cookie、Dom等等）。
+   根据这一点，可以方便地通过创建script节点的方法来实现完全跨域的通信。具体的做法可以参考YUI的Get Utility
+2、原理：所有具有src属性的HTML标签都是可以跨域的，包括img, script
    限制：需要创建一个DOM对象，只能用于GET方法
+3、借鉴：https://github.com/FatDong1/cross-domain
 </pre>
 </body>
 </html>
