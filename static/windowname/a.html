@@ -6,7 +6,19 @@
 </head>
 <body>
 <p>hello world</p>
+
+<pre>
+1、window对象有个name属性，该属性有个特征：即在一个窗口(window)的生命周期内,窗口载入的所有的页面都是共享一个window.name的，每个页面对window.name都有读写的权限，window.name是持久存在一个窗口载入过的所有页面中的，并不会因新页面的载入而进行重置。
+
+2、name只能是字符串。
+</pre>
 <script>
+// window.name = "My window's name";
+// setTimeout(function(){
+//     window.location.href = "http://localhost:7000/windowname/b.html";
+// },1000)
+
+
 var p = document.getElementsByTagName('p')[0];
 var isFirst = true;
 var iframe = document.createElement('iframe');

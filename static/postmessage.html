@@ -27,6 +27,19 @@
     <button>发送信息</button>
     <p style="text-align: left;">message :  <span></span></p>
 </div>
+
+<pre>
+在HTML5中新增了postMessage方法，postMessage可以实现跨文档消息传输（Cross Document Messaging），Internet Explorer 8, Firefox 3, Opera 9, Chrome 3和 Safari 4都支持postMessage。
+该方法可以通过绑定window的message事件来监听发送跨文档消息传输内容。
+使用postMessage实现跨域的话原理就类似于jsonp，动态插入iframe标签，再从iframe里面拿回数据
+
+
+postMessage的使用方法：
+otherWindow.postMessage(message, targetOrigin);
+otherWindow:指目标窗口，也就是给哪个window发消息，是 window.frames 属性的成员或者由 window.open 方法创建的窗口
+message: 是要发送的消息，类型为 String、Object (IE8、9 不支持)
+targetOrigin: 是限定消息接收范围，不限制请使用 '*
+</pre>
 <iframe id="child" src="http://localhost:7001/postmessage.html"></iframe>
 <script>
     var input = document.getElementsByTagName('input')[0];

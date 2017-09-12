@@ -20,6 +20,33 @@ xhr.withCredentials = true;
 同时，服务端也要设置
 
 Access-Control-Allow-Credentials: true
+
+
+
+Access-Control-Allow-Origin : 指明哪些请求源被允许访问资源，值可以为 "*"，"null"，或者单个源地址。
+Access-Control-Allow-Credentials : 指明当请求中省略 creadentials 标识时响应是否暴露。对于预请求来说，它表明实际的请求中可以包含用户凭证。
+Access-Control-Expose-Headers : 指明哪些头信息可以安全的暴露给 CORS API 规范的 API。
+Access-Control-Max-Age : 指明预请求可以在预请求缓存中存放多久。
+Access-Control-Allow-Methods : 对于预请求来说，哪些请求方式可以用于实际的请求。
+Access-Control-Allow-Headers : 对于预请求来说，指明了哪些头信息可以用于实际的请求中。
+Origin : 指明预请求或者跨域请求的来源。
+Access-Control-Request-Method : 对于预请求来说，指明哪些预请求中的请求方式可以被用在实际的请求中。
+Access-Control-Request-Headers : 指明预请求中的哪些头信息可以用于实际的请求中。
+
+
+
+
+1、Cross-Origin Resource Sharing(跨域资源共享)是一种允许当前域（origin）的资源（比如html/js/web service）被其他域（origin）的脚本请求访问的机制。
+当使用XMLHttpRequest发送请求时，浏览器如果发现违反了同源策略就会自动加上一个请求头:origin,后端在接受到请求后确定响应后会在Response Headers中加入一个属性:Access-Control-Allow-Origin,值就是发起请求的源地址(http://localhost:7000)，浏览器得到响应会进行判断Access-Control-Allow-Origin的值是否和当前的地址相同，只有匹配成功后才进行响应处理。
+2、CORS（Cross-Origin Resource Sharing）跨域资源共享，定义了必须在访问跨域资源时，浏览器与服务器应该如何沟通。CORS背后的基本思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。
+3、CORS和JSONP对比
+
+JSONP只能实现GET请求，而CORS支持所有类型的HTTP请求。
+
+使用CORS，开发者可以使用普通的XMLHttpRequest发起请求和获得数据，比起JSONP有更好的错误处理。
+
+JSONP主要被老的浏览器支持，它们往往不支持CORS，而绝大多数现代浏览器都已经支持了CORS）。
+
 </pre>
 <script>
     var btn = document.getElementsByTagName('button')[0];
