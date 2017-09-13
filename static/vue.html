@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>vue的原理</title>
+    <title>模仿vue极简双向绑定的实现</title>
 </head>
 
 <body>
@@ -12,9 +12,6 @@
     <div id="app">
         <input type="text" v-model="text"> {{text}}
     </div>
-    <br/>
-    <br/>
-    <br/>
     <script type="text/javascript">
     //3、模仿vue极简双向绑定的实现
     function nodeToFragment(node, vm) {
@@ -32,6 +29,7 @@
     //数据初始化
     function compile(node, vm) {
         var reg = /\{\{(.*)\}\}/;
+        // 节点类型为元素
         if (node.nodeType === 1) {
             var attr = node.attributes;
             //解析属性
@@ -39,9 +37,9 @@
                 if (attr[i].nodeName == 'v-model') {
                     var name = attr[i].nodeValue; //获取v-model绑定的属性名
                     //console.log(name);
-                    node.addEventListener('input',function(e){
+                    node.addEventListener('input', function(e) {
                         //给相应的data属性赋值，劲儿触发该属性的set方法
-                        vm[name]=e.target.value;
+                        vm[name] = e.target.value;
                     });
                     node.value = vm.data[name]; //将data的值赋给该node
                     node.removeAttribute('v-model');
@@ -54,58 +52,120 @@
                 var name = RegExp.$1; //获取匹配到的字符串
                 name = name.trim();
                 //node.nodeValue = vm.data[name]; //将data的值赋给该node
-                node.nodeValue = vm[name]; //将data的值赋给该node
+                //node.nodeValue = vm[name]; //将data的值赋给该node
+                new Watcher(vm, node, name);
             }
         }
     }
     //响应式事件
-    function defineReactive(obj,key,val){
-        Object.defineProperty(obj,key,{
-            get:function(){
+    function defineReactive(obj, key, val) {
+
+        var dep = new Dep();
+
+        Object.defineProperty(obj, key, {
+            get: function() {
+                // 添加订阅者watcher到主题对象Dep
+                if (Dep.target) dep.addSub(Dep.target);
                 return val;
             },
-            set:function(newval){
-                if(newval===val) return;
-                val=newval;
+            set: function(newval) {
+                if (newval === val) return;
+                val = newval;
                 console.log(val);
+                // 作为发布者发出通知
+                dep.notify();
             }
         });
     }
-    function observe(obj,vm){
-        Object.keys(obj).forEach(function(key){
-            defineReactive(vm,key,obj[key]);
+
+    function observe(obj, vm) {
+        Object.keys(obj).forEach(function(key) {
+            defineReactive(vm, key, obj[key]);
         });
     }
     //观察者模式
-    var pub={
-        publish:function(){
-            dep.notify();
-        }
-    };
-    var sub1={update:function(){console.log(1)}};
-    var sub2={update:function(){console.log(2)}};
-    var sub3={update:function(){console.log(3)}};
-    function Dep(){
-        this.subs=[sub1,sub2,sub3];
-    };
-    Dep.prototype.notify=function(){
-        this.subs.forEach(function(sub){
-            sub.update();
-        });
+    // var pub={
+    //     publish:function(){
+    //         dep.notify();
+    //     }
+    // };
+    // var sub1={update:function(){console.log(1)}};
+    // var sub2={update:function(){console.log(2)}};
+    // var sub3={update:function(){console.log(3)}};
+    // function Dep(){
+    //     this.subs=[sub1,sub2,sub3];
+    // };
+    // Dep.prototype.notify=function(){
+    //     this.subs.forEach(function(sub){
+    //         sub.update();
+    //     });
+    // }
+    // var dep=new Dep();
+    // pub.publish();
+
+    function Watcher(vm, node, name) {
+        Dep.target = this;
+        this.name = name;
+        this.node = node;
+        this.vm = vm;
+        //this.nodeType = nodeType;
+        this.update();
+        Dep.target = null;
     }
-    var dep=new Dep();
-    pub.publish();
+    Watcher.prototype = {
+        update: function() {        // 节点类型为元素
+            this.get();
+            this.node.nodeValue = this.value;
+            // if (this.nodeType == 'text') {
+            //     this.node.nodeValue = this.value;
+            // }
+            // if (this.nodeType == 'input') {
+            //     this.node.value = this.value;
+            // }
+        },
+        //获取data中的属性值
+        get: function() {
+            this.value = this.vm[this.name]; //触发相应属性的get
+        }
+    }
+
+    // function defineReactive(obj, key, val) {
+    //     var dep = new Dep();
+    //     Object.defineProperty(obj, key, {
+    //         get: function() {},
+    //         set: function(newval) {
+    //             if (newval === val) return;
+    //             val = newval;
+    //             dep.notify();
+    //         }
+    //     })
+    // }
+
+    function Dep() {
+        this.subs = [];
+    }
+    Dep.prototype = {
+        addSub: function(sub) {
+            this.subs.push(sub);
+        },
+        notify: function() {
+            this.subs.forEach(function(sub) {
+                sub.update();
+            });
+        }
+    }
 
 
 
 
     function Vue(options) {
         this.data = options.data;
-        var data=this.data;
-        observe(data,this);
+        var data = this.data;
+        observe(data, this);
 
         var id = options.el;
         var dom = nodeToFragment(document.getElementById(id), this);
+        // 编译完成后，将dom返回到app中
         document.getElementById(id).appendChild(dom);
     }
 
