@@ -9,6 +9,34 @@
 <button>通过Proxy跨域</button>
 <p>hello world！</p>
 
+<pre>
+1、proxy服务器
+Nginx服务器配置
+server {
+    listen       81;
+    server_name  www.domain1.com;
+
+    location / {
+        proxy_pass   http://www.domain2.com:8080;  #反向代理
+        proxy_cookie_domain www.domain2.com www.domain1.com; #修改cookie里域名
+        index  index.html index.htm;
+
+        # 当用webpack-dev-server等中间件代理接口访问nignx时，此时无浏览器参与，故没有同源限制，下面的跨域配置可不启用
+        add_header Access-Control-Allow-Origin http://www.domain1.com;  #当前端只跨域不带cookie时，可为*
+        add_header Access-Control-Allow-Credentials true;
+    }
+}
+
+2、vue框架的跨域（1次跨域）
+利用node + webpack + webpack-dev-server代理接口跨域。在开发环境下，由于vue渲染服务和接口代理服务都是webpack-dev-server同一个，所以页面与代理接口之间不再跨域，无须设置headers跨域信息了。
+webpack设置
+proxy: [{
+    context: '/login',
+    target: 'http://www.domain2.com:8080',  // 代理跨域目标接口
+    changeOrigin: true,
+    cookieDomainRewrite: 'www.domain1.com'  // 可以为false，表示不修改
+}],
+</pre>
 <script>
     var btn = document.getElementsByTagName('button')[0];
     var text = document.getElementsByTagName('p')[0];

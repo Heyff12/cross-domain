@@ -11,14 +11,46 @@
 <br/><br/><br/>
 <h1>备注</h1>
 <pre>
+
+普通跨域请求：只服务端设置Access-Control-Allow-Origin即可，前端无须设置。
+带cookie请求：前后端都需要设置字段，另外需注意：所带cookie为跨域请求接口所在域的cookie，而非当前页。
+目前，所有浏览器都支持该功能(IE8+：IE8/9需要使用XDomainRequest对象来支持CORS）)，CORS也已经成为主流的跨域解决方案。
+//后台------------------------------------------------
+var http = require('http');
+var server = http.createServer();
+var qs = require('querystring');
+
+server.on('request', function(req, res) {
+    var postData = '';
+
+    // 数据块接收中
+    req.addListener('data', function(chunk) {
+        postData += chunk;
+    });
+
+    // 数据接收完毕
+    req.addListener('end', function() {
+        postData = qs.parse(postData);
+
+        // 跨域后台设置
+        res.writeHead(200, {
+            'Access-Control-Allow-Credentials': 'true',     // 后端允许发送Cookie
+            'Access-Control-Allow-Origin': 'http://www.domain1.com',    // 允许访问的域（协议+域名+端口）
+            'Set-Cookie': 'l=a123456;Path=/;Domain=www.domain2.com;HttpOnly'   // HttpOnly:脚本无法读取cookie
+        });
+
+        res.write(JSON.stringify(postData));
+        res.end();
+    });
+});
+
+server.listen('8080');
+console.log('Server is running at port 8080...');
+
 CORS默认不发送cookie，如果要发送cookie，需要设置withCredentials
-
 var xhr = new XMLHttpRequest();
-
 xhr.withCredentials = true;
-
 同时，服务端也要设置
-
 Access-Control-Allow-Credentials: true
 
 
@@ -32,7 +64,6 @@ Access-Control-Allow-Headers : 对于预请求来说，指明了哪些头信息�
 Origin : 指明预请求或者跨域请求的来源。
 Access-Control-Request-Method : 对于预请求来说，指明哪些预请求中的请求方式可以被用在实际的请求中。
 Access-Control-Request-Headers : 指明预请求中的哪些头信息可以用于实际的请求中。
-
 
 
 

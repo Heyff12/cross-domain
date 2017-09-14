@@ -29,6 +29,18 @@
 </div>
 
 <pre>
+postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以跨域操作的window属性之一，它可用于解决以下方面的问题：
+a.） 页面和其打开的新窗口的数据传递
+b.） 多窗口之间消息传递
+c.） 页面与嵌套的iframe消息传递
+d.） 上面三个场景的跨域数据传递
+
+用法：postMessage(data,origin)方法接受两个参数
+data： html5规范支持任意基本类型或可复制的对象，但部分浏览器只支持字符串，所以传参时最好用JSON.stringify()序列化。
+origin： 协议+主机+端口号，也可以设置为"*"，表示可以传递给任意窗口，如果要指定和当前窗口同源的话设置为"/"。
+
+
+
 在HTML5中新增了postMessage方法，postMessage可以实现跨文档消息传输（Cross Document Messaging），Internet Explorer 8, Firefox 3, Opera 9, Chrome 3和 Safari 4都支持postMessage。
 该方法可以通过绑定window的message事件来监听发送跨文档消息传输内容。
 使用postMessage实现跨域的话原理就类似于jsonp，动态插入iframe标签，再从iframe里面拿回数据
@@ -39,6 +51,8 @@ otherWindow.postMessage(message, targetOrigin);
 otherWindow:指目标窗口，也就是给哪个window发消息，是 window.frames 属性的成员或者由 window.open 方法创建的窗口
 message: 是要发送的消息，类型为 String、Object (IE8、9 不支持)
 targetOrigin: 是限定消息接收范围，不限制请使用 '*
+
+
 </pre>
 <iframe id="child" src="http://localhost:7001/postmessage.html"></iframe>
 <script>

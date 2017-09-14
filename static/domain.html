@@ -30,6 +30,8 @@
     1、document.domain的设置是有限制的，我们只能把document.domain设置成自身或更高一级的父域，且主域必须相同。
     2、案例 <a href="http://jzzx.yaya12.com/domain.html">http://jzzx.yaya12.com/domain.html</a>
     3、需要双向配合--在原页面进行 域的提升
+    4、此方案仅限主域相同，子域不同的跨域应用场景。
+        实现原理：两个页面都通过js强制设置document.domain为基础主域，就实现了同域。
 </pre>
 <script>
     var p = document.getElementsByTagName('p')[0];
