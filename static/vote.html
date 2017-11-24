@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>CROS-juejin</title>
+    <style type="text/css">
+    ul {}
+
+    a {
+        text-decoration: none;
+        color: green;
+        padding-right: 6px;
+    }
+
+    i {
+        color: grey;
+        font-size: 12px;
+    }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //    Request URL: http: //weixin.lywnds.com/app/index.php?i=4&c=entry&rid=641&id=62&do=vote&m=tyzm_diamondvote
+    //    Request Method: POST
+    //    Status Code: 200
+    //    Remote Address: 175.155 .119 .161: 8080
+
+
+    //    cache-control:no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+    // content-length:115
+    // content-type:text/html; charset=utf-8
+    // date:Thu, 23 Nov 2017 09:12:34 GMT
+    // expires:Thu, 19 Nov 1981 08:52:00 GMT
+    // pragma:no-cache
+    // q-proxy-data:151;101.204.228.105
+    // q-proxy-flag:1
+    // q-proxy-resp:adc=1
+    // status:200
+    // version:HTTP/1.1
+    // x-mod-spdy:0.9.2.1-0
+
+
+    // Provisional headers are shown
+    // Accept:application/json, text/javascript, */*; q=0.01
+    // Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+    // Origin:http://weixin.lywnds.com
+    // Q-SID:1511428293
+    // Referer:http://weixin.lywnds.com/app/index.php?i=4&c=entry&rid=641&id=62&do=view&m=tyzm_diamondvote
+    // User-Agent:Mozilla/5.0 (Linux; Android 4.4.2; H60-L01 Build/HDH60-L01; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/88888888 Safari/537.36 MicroMessenger/6.5.19.1140 NetType/WIFI Language/zh_CN
+    // X-Requested-With:XMLHttpRequest
+
+    // i:4
+    // c:entry
+    // rid:641
+    // id:62
+    // do:vote
+    // m:tyzm_diamondvote
+
+
+    // votetype:0
+    </script>
+    <h2>投票</h2>
+    <!-- <div>page:
+        <input type="text" name="" value="0" />
+    </div>
+    <div>pageSize:
+        <input type="text" name="" value="20" />
+    </div> -->
+    <button>通过node代理跨域</button>
+    <ul>
+    </ul>
+    <p></p>
+    <br/>
+    <br/>
+    <br/>
+    <script>
+    var btn = document.getElementsByTagName('button')[0];
+    var text = document.getElementsByTagName('p')[0];
+    var ul = document.getElementsByTagName('ul')[0];
+    btn.addEventListener('click', function() {
+        // var page = document.getElementsByTagName('input')[0].value;
+        // var pageSize = document.getElementsByTagName('input')[1].value;
+
+        var xmlhttp;
+        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.withCredentials = false;
+
+        //---请求
+        // xmlhttp.open("post", 'index.php' + '?i=4&c=entry&rid=641&id=62&do=vote&m=tyzm_diamondvote');
+        xmlhttp.open("post", '/index.php?i=4&c=entry&rid=641&id=62&do=vote&m=tyzm_diamondvote');
+
+        //xmlhttp.setRequestHeader("Origin", "http://weixin.lywnds.com");
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.setRequestHeader("Accept", "application/json, text/javascript, */*");
+        xmlhttp.setRequestHeader("Q-SID", "1511428293");
+        xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+
+        // xmlhttp.send({ 'votetype': 0 });
+        xmlhttp.send('votetype=0');
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = xmlhttp.responseText;
+                var obj = eval("(" + data + ")");
+
+                console.log(obj);
+                text.innerHTML = obj.message;
+            }
+        }
+    });
+
+    function vote(id) {
+        var xmlhttp;
+        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.withCredentials = false;
+
+        //---请求
+        // xmlhttp.open("post", 'index.php' + '?i=4&c=entry&rid=641&id=62&do=vote&m=tyzm_diamondvote');
+        xmlhttp.open("post", '/index.php?i=4&c=entry&rid=641&id=62&do=vote&m=tyzm_diamondvote');
+
+        xmlhttp.setRequestHeader("Origin", "http://weixin.lywnds.com");
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.setRequestHeader("Accept", "application/json, text/javascript, */*");
+        xmlhttp.setRequestHeader("Q-SID", id);
+        xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+
+        // xmlhttp.send({ 'votetype': 0 });
+        xmlhttp.send('votetype=0');
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = xmlhttp.responseText;
+                var obj = eval("(" + data + ")");
+
+                console.log(obj);
+            }
+        }
+    }
+    for(let i=1;i<10;i++){
+    	let id = 1511428293+ 10000000000*i;
+    	vote(id);
+    }
+    </script>
+</body>
+
+</html>
