@@ -1,3 +1,11 @@
+# 安装  
+```
+npm install
+node appReq.js  
+node appRes.js
+```
+
+
 # cross-domain
 跨域请求的8中处理方法
 <ul>
