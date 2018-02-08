@@ -1,7 +1,9 @@
 # 安装  
 ```
 npm install
-node appReq.js  
+## 打开请求设置  localhost:7000/index.html  
+node appReq.js  
+## 打开相应请求设置  localhost:7001 
 node appRes.js
 ```
 
