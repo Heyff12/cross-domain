@@ -6,7 +6,10 @@
 </head>
 <body>
 <p>hello world</p>
+<button>获取qq音乐歌手列表</button>
+<p>
 
+</p>
 <br/><br/><br/>
 <h1>备注</h1>
 <h3>jsonp原理</h3>
@@ -49,8 +52,24 @@ console.log('Server is running at port 8080...');
         }, 2000)
         // 2s后p标签内的内容将改变
     }
+
+    var URL = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'  
+    var btn = document.getElementsByTagName('button')[0];
+    var text = document.getElementsByTagName('p')[1];
+    btn.addEventListener('click', function () {
+        var xhr = new XMLHttpRequest();
+        var url = URL;    // 请求的3001端口获取数据
+        xhr.open('get', url);                 // 与3001端口建立一个连接
+        xhr.send(null);                       // 发送给3001端口数据为空
+        xhr.onreadystatechange = () => {     // 请求状态改变后调用这个函数
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {  // 如果请求成功
+                text.innerHTML = xhr.response;
+            }
+        }
+    })
 </script>
 <script src="http://localhost:7001/jsonp?callback=myFunction"></script>
+<!-- <script src="http://localhost:7001/jsonp?callback=myFunction"></script> -->
 <!--在src里面的问号？后面的参数({callback: 'myFunction'})可以在3001端口页面中可以通过req.query.callback获取-->
 </body>
 </html>
