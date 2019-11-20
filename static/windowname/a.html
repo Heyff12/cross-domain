@@ -33,12 +33,14 @@ document.body.appendChild(iframe);
 
 var loadFunc = function () {
     if(isFirst){
+        console.log('-----isFirst-----true---')
         //加载完url后，修改src属性，使其与3000端口同源
         iframe.src = 'http://localhost:7000/windowname/b.html';
         setTimeout(function(){
             isFirst = false;
         },3000);        
     }else {
+        console.log('-----isFirst-----false---')
         //iframe回到原域后，获取name的值，执行回调函数，然后销毁iframe
         p.innerHTML = iframe.contentWindow.name;
         iframe.contentWindow.close();

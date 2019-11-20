@@ -28,7 +28,7 @@ document.body.appendChild(iframe);
 function checkHash () {
     if (location.hash) {
         let data = location.hash.substring(1);     // 去除'#'号
-        p.innerHTML = data;
+        p.innerHTML = decodeURI(data);
     }
 }
 setInterval(checkHash, 2000);   // 每隔2s监听hash值是否发生变化
